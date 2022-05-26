@@ -166,6 +166,7 @@ class Fine_management extends Admin_Controller
 			curl_close($curl);
 			echo json_encode($response);
 		} else {
+			$response = array();
 			$response = curl_exec($curl);
 			curl_close($curl);
 			$data = json_decode($response);
