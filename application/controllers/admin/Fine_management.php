@@ -166,7 +166,8 @@ class Fine_management extends Admin_Controller
 			$http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			curl_close($curl);
 			$response['response'] = false;
-			$response['message'] = 'Request Error:' . curl_error($curl);;
+			$response['message'] = 'Request Error:' . curl_error($curl);
+			curl_close($curl);
 			echo json_encode($response);
 		} else {
 			curl_close($curl);
