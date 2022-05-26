@@ -158,10 +158,6 @@ class Fine_management extends Admin_Controller
 			CURLOPT_FAILONERROR => TRUE
 		));
 		//var_dump($curl);
-		$response = curl_exec($curl);
-
-
-
 		if (curl_errno($curl)) {
 			$http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 			curl_close($curl);
@@ -170,6 +166,7 @@ class Fine_management extends Admin_Controller
 			curl_close($curl);
 			echo json_encode($response);
 		} else {
+			$response = curl_exec($curl);
 			curl_close($curl);
 			$data = json_decode($response);
 			if ($data->response) {
