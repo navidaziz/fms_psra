@@ -43,7 +43,14 @@
           <div class="col-md-7">
             <div id="logo">
               <div style=" width:100%; text-align: center; margin:0px auto; color:black; ">
-                <img src="<?php echo site_url("assets/uploads/" . $system_global_settings[0]->sytem_admin_logo); ?>" alt="<?php echo $system_global_settings[0]->system_title ?>" title="<?php echo $system_global_settings[0]->system_title ?>" style="width:350px !important;" />
+                <style>
+                  @media (max-width:629px) {
+                    img#logo_image {
+                      display: none;
+                    }
+                  }
+                </style>
+                <img id="logo_image" src="<?php echo site_url("assets/uploads/" . $system_global_settings[0]->sytem_admin_logo); ?>" alt="<?php echo $system_global_settings[0]->system_title ?>" title="<?php echo $system_global_settings[0]->system_title ?>" style="width:350px !important;" />
 
                 <h2><?php echo $system_global_settings[0]->system_title ?></h2>
                 <h4><?php echo $system_global_settings[0]->system_sub_title ?></h4>
