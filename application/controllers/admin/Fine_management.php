@@ -139,38 +139,77 @@ class Fine_management extends Admin_Controller
 			echo json_encode($response);
 			exit();
 		}
-		//$school_id = 1;
-		$curl = curl_init();
 
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'http://psra.gkp.pk/schoolReg/api/psra/get_school_detail',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => array("school_id" => $school_id),
-			CURLOPT_HTTPHEADER => array(
-				'x-api-key: n2r5u8x/A?D(G+KbPdSgVkYp3s6v9y$B'
-			),
-			CURLOPT_FAILONERROR => TRUE
-		));
-		//var_dump($curl);
-		if (curl_errno($curl)) {
-			$http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-			curl_close($curl);
-			$response['response'] = false;
-			$response['message'] = 'Request Error:' . curl_error($curl);
-			curl_close($curl);
-			echo json_encode($response);
+		if ($this->input->post("school_id")) {
+			$school_id = (int) $this->input->post("school_id");
+			$query = "SELECT `s`.`schoolId`, 
+						   `s`.`registrationNumber`,
+						   `s`.`schoolName`,
+						   d.districtTitle,
+						   t.tehsilTitle,
+						   s.address,
+						  ( select s_s.level_of_school_id  from school as s_s 
+						  where s_s.schools_id=s.schoolId and s_s.status=1 
+						  order by s_s.session_year_id DESC LIMIT 1) as level_id
+					 FROM schools as s
+					 INNER JOIN district as d ON (d.districtId = s.district_id)
+					 INNER JOIN tehsils as t ON (t.tehsilId = s.tehsil_id)
+					 WHERE schoolId  = '" . $school_id . "'
+					 AND `s`.`registrationNumber` > 0
+					 ";
+			$registration_db = $this->load->database('registration_db', TRUE);
+			$school = $registration_db->query($query)->result();
+			if ($school) {
+				$response['response'] = true;
+				$response['school'] = $school;
+				$response['message'] = '';
+				echo json_encode($response);
+			} else {
+				$response['response'] = true;
+				$response['school'] = false;
+				$response['message'] = 'School ID not found';
+				echo json_encode($response);
+			}
 		} else {
-			$response = array();
-			$response = curl_exec($curl);
-			curl_close($curl);
-			echo $response;
+			$response['response'] = true;
+			$response['school'] = false;
+			$response['message'] = 'School ID Required';
+			echo json_encode($response);
 		}
+
+
+		//$school_id = 1;
+		// $curl = curl_init();
+
+		// curl_setopt_array($curl, array(
+		// 	CURLOPT_URL => 'http://psra.gkp.pk/schoolReg/api/psra/get_school_detail',
+		// 	CURLOPT_RETURNTRANSFER => true,
+		// 	CURLOPT_ENCODING => '',
+		// 	CURLOPT_MAXREDIRS => 10,
+		// 	CURLOPT_TIMEOUT => 0,
+		// 	CURLOPT_FOLLOWLOCATION => true,
+		// 	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		// 	CURLOPT_CUSTOMREQUEST => 'POST',
+		// 	CURLOPT_POSTFIELDS => array("school_id" => $school_id),
+		// 	CURLOPT_HTTPHEADER => array(
+		// 		'x-api-key: n2r5u8x/A?D(G+KbPdSgVkYp3s6v9y$B'
+		// 	),
+		// 	CURLOPT_FAILONERROR => TRUE
+		// ));
+		// //var_dump($curl);
+		// if (curl_errno($curl)) {
+		// 	$http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		// 	curl_close($curl);
+		// 	$response['response'] = false;
+		// 	$response['message'] = 'Request Error:' . curl_error($curl);
+		// 	curl_close($curl);
+		// 	echo json_encode($response);
+		// } else {
+		// 	$response = array();
+		// 	$response = curl_exec($curl);
+		// 	curl_close($curl);
+		// 	echo $response;
+		// }
 	}
 
 	public function get_add_fine_payment_form()
