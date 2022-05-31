@@ -212,6 +212,11 @@ class Fine_management extends Admin_Controller
 		// }
 	}
 
+	public function fined_summary()
+	{
+		$this->load->view(ADMIN_DIR . "fine_management/fined_summary", $this->data);
+	}
+
 	public function get_add_fine_payment_form()
 	{
 		$this->data['fined_school_id'] = $fined_school_id = (int) $this->input->post("fined_school_id");

@@ -310,6 +310,7 @@
 
                         get_add_fine_payment_form(<?php echo $fined_school_id; ?>);
                         fined_school_list();
+                        fined_summary();
                     }
                 });
         } else {
@@ -335,6 +336,7 @@
 
                         get_add_fine_payment_form(<?php echo $fined_school_id; ?>);
                         fined_school_list();
+                        fined_summary();
                     }
                 });
         } else {
@@ -359,6 +361,7 @@
 
                         get_add_fine_payment_form(<?php echo $fined_school_id; ?>);
                         fined_school_list();
+                        fined_summary();
                     }
                 });
         } else {
@@ -385,6 +388,7 @@
 
                         get_add_fine_payment_form(<?php echo $fined_school_id; ?>);
                         fined_school_list();
+                        fined_summary();
                     }
 
                 });
@@ -448,6 +452,7 @@
 
                         get_add_fine_payment_form(<?php echo $fined_school_id; ?>);
                         fined_school_list();
+                        fined_summary();
                     }
 
                 });
@@ -474,6 +479,7 @@
 
                         get_add_fine_payment_form(<?php echo $fined_school_id; ?>);
                         fined_school_list();
+                        fined_summary();
                     }
 
                 });
