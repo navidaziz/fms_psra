@@ -10,7 +10,7 @@ class Users extends Admin_Controller
     {
 
         parent::__construct();
-        $this->load->model("admin/user_model");
+        $this->load->model("admin/User_model");
         $this->lang->load("users", 'english');
         $this->lang->load("system", 'english');
         //$this->output->enable_profiler(TRUE);
