@@ -302,7 +302,7 @@
 				data: {},
 			})
 			.done(function(respose) {
-				$('#fine_school_list').html(respose);
+				$('#fine_summary').html(respose);
 			});
 	}
 
