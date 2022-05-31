@@ -96,9 +96,9 @@ class User_model extends MY_Model
 
         $inputs["user_password"]  =  $this->input->post("user_password");
 
-        $inputs["restaurant_id"]  =  $this->input->post("restaurant_id");
 
-        $inputs["rider_id"]  =  $this->input->post("rider_id");
+
+
 
         if ($_FILES["user_image"]["size"] > 0) {
             $inputs["user_image"]  =  $this->router->fetch_class() . "/" . $this->input->post("user_image");
@@ -123,9 +123,9 @@ class User_model extends MY_Model
 
         $inputs["user_password"]  =  $this->input->post("user_password");
 
-        $inputs["restaurant_id"]  =  $this->input->post("restaurant_id");
 
-        $inputs["rider_id"]  =  $this->input->post("rider_id");
+
+
 
         if ($_FILES["user_image"]["size"] > 0) {
             //remove previous file....
