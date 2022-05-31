@@ -142,6 +142,7 @@ class User_model extends MY_Model
     //----------------------------------------------------------------
     public function get_user_list($where_condition = NULL, $pagination = TRUE, $public = FALSE)
     {
+
         $data = (object) array();
         $fields = array(
             "users.*", "roles.role_title"

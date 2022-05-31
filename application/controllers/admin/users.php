@@ -10,7 +10,7 @@ class Users extends Admin_Controller
     {
 
         parent::__construct();
-        $this->load->model("admin/User_model");
+        $this->load->model("admin/user_model");
         $this->lang->load("users", 'english');
         $this->lang->load("system", 'english');
         //$this->output->enable_profiler(TRUE);
@@ -40,7 +40,7 @@ class Users extends Admin_Controller
 		$user_id = $this->input->post('id');
 		$this->data['restaurant_id'] = $this->input->post('restaurant_id');
 		$this->data['role_id'] = $this->input->post('role_id');
-		$this->data["user"] = $this->User_model->get($user_id);
+		$this->data["user"] = $this->user_model->get($user_id);
 		$this->load->view(ADMIN_DIR."users/edit_user_form", $this->data);
 		}	*/
 
@@ -52,7 +52,7 @@ class Users extends Admin_Controller
     {
 
         $where = "`users`.`status` IN (0, 1) AND  `users`.`role_id`!=2";
-        $data = $this->User_model->get_user_list($where);
+        $data = $this->user_model->get_user_list($where);
         $this->data["users"] = $data->users;
         $this->data["pagination"] = $data->pagination;
         $this->data["title"] = $this->lang->line('Users');
@@ -69,7 +69,7 @@ class Users extends Admin_Controller
 
         $user_id = (int) $user_id;
 
-        $this->data["users"] = $this->User_model->get_user($user_id);
+        $this->data["users"] = $this->user_model->get_user($user_id);
         $this->data["title"] = $this->lang->line('User Details');
         $this->data["view"] = ADMIN_DIR . "users/view_user";
         $this->load->view(ADMIN_DIR . "layout", $this->data);
@@ -83,7 +83,7 @@ class Users extends Admin_Controller
     {
 
         $where = "`users`.`status` IN (2) ";
-        $data = $this->User_model->get_user_list($where);
+        $data = $this->user_model->get_user_list($where);
         $this->data["users"] = $data->users;
         $this->data["pagination"] = $data->pagination;
         $this->data["title"] = $this->lang->line('Trashed Users');
@@ -101,7 +101,7 @@ class Users extends Admin_Controller
         $user_id = (int) $user_id;
 
 
-        $this->User_model->changeStatus($user_id, "2");
+        $this->user_model->changeStatus($user_id, "2");
         $this->session->set_flashdata("msg_success", $this->lang->line("trash_msg_success"));
         redirect(ADMIN_DIR . "users/view/" . $page_id);
     }
@@ -116,7 +116,7 @@ class Users extends Admin_Controller
         $user_id = (int) $user_id;
 
 
-        $this->User_model->changeStatus($user_id, "1");
+        $this->user_model->changeStatus($user_id, "1");
         $this->session->set_flashdata("msg_success", $this->lang->line("restore_msg_success"));
         redirect(ADMIN_DIR . "users/trashed/" . $page_id);
     }
@@ -132,7 +132,7 @@ class Users extends Admin_Controller
         $user_id = (int) $user_id;
 
 
-        $this->User_model->changeStatus($user_id, "0");
+        $this->user_model->changeStatus($user_id, "0");
         $this->session->set_flashdata("msg_success", $this->lang->line("draft_msg_success"));
         redirect(ADMIN_DIR . "users/view/" . $page_id);
     }
@@ -148,7 +148,7 @@ class Users extends Admin_Controller
         $user_id = (int) $user_id;
 
 
-        $this->User_model->changeStatus($user_id, "1");
+        $this->user_model->changeStatus($user_id, "1");
         $this->session->set_flashdata("msg_success", $this->lang->line("publish_msg_success"));
         redirect(ADMIN_DIR . "users/view/" . $page_id);
     }
@@ -162,12 +162,12 @@ class Users extends Admin_Controller
     {
 
         $user_id = (int) $user_id;
-        //$this->User_model->changeStatus($user_id, "3");
+        //$this->user_model->changeStatus($user_id, "3");
         //Remove file....
-        $users = $this->User_model->get_user($user_id);
+        $users = $this->user_model->get_user($user_id);
         $file_path = $users[0]->user_image;
-        $this->User_model->delete_file($file_path);
-        $this->User_model->delete(array('user_id' => $user_id));
+        $this->user_model->delete_file($file_path);
+        $this->user_model->delete(array('user_id' => $user_id));
         $this->session->set_flashdata("msg_success", $this->lang->line("delete_msg_success"));
         redirect(ADMIN_DIR . "users/trashed/" . $page_id);
     }
@@ -181,7 +181,7 @@ class Users extends Admin_Controller
     public function add()
     {
 
-        $this->data["roles"] = $this->User_model->getList("roles", "role_id", "role_title", $where = "`role_id` > 1");
+        $this->data["roles"] = $this->user_model->getList("roles", "role_id", "role_title", $where = "`role_id` > 1");
 
         $this->data["title"] = $this->lang->line('Add New User');
         $this->data["view"] = ADMIN_DIR . "users/add_user";
@@ -192,13 +192,13 @@ class Users extends Admin_Controller
 
     public function save_user_data()
     {
-        if ($this->User_model->validate_form_data() === TRUE) {
+        if ($this->user_model->validate_form_data() === TRUE) {
 
             if ($this->upload_file("user_image")) {
                 $_POST['user_image'] = $this->data["upload_data"]["file_name"];
             }
 
-            $user_id = $this->User_model->save_data();
+            $user_id = $this->user_model->save_data();
             if ($user_id) {
                 $this->session->set_flashdata("msg_success", $this->lang->line("add_msg_success"));
                 echo "success";
@@ -216,13 +216,13 @@ class Users extends Admin_Controller
 
     public function save_data()
     {
-        if ($this->User_model->validate_form_data() === TRUE) {
+        if ($this->user_model->validate_form_data() === TRUE) {
 
             if ($this->upload_file("user_image")) {
                 $_POST['user_image'] = $this->data["upload_data"]["file_name"];
             }
 
-            $user_id = $this->User_model->save_data();
+            $user_id = $this->user_model->save_data();
             if ($user_id) {
                 $this->session->set_flashdata("msg_success", $this->lang->line("add_msg_success"));
                 redirect(ADMIN_DIR . "users/edit/$user_id");
@@ -243,8 +243,8 @@ class Users extends Admin_Controller
     public function edit($user_id)
     {
         $user_id = (int) $user_id;
-        $this->data["user"] = $this->User_model->get($user_id);
-        $this->data["roles"] = $this->User_model->getList("roles", "role_id", "role_title", $where = "`role_id` > 1");
+        $this->data["user"] = $this->user_model->get($user_id);
+        $this->data["roles"] = $this->user_model->getList("roles", "role_id", "role_title", $where = "`role_id` > 1");
 
         $this->data["title"] = $this->lang->line('Edit User');
         $this->data["view"] = ADMIN_DIR . "users/edit_user";
@@ -270,7 +270,7 @@ class Users extends Admin_Controller
 
         $this->data['restaurant_id'] = $this->input->post('restaurant_id');
         $this->data['role_id'] = 23;
-        $this->data["user"] = $this->User_model->get($user_id);
+        $this->data["user"] = $this->user_model->get($user_id);
         $this->load->view(ADMIN_DIR . "users/edit_user_form", $this->data);
     }
 
@@ -284,13 +284,13 @@ class Users extends Admin_Controller
         }
         /*	$this->data['restaurant_id'] = (int) $this->input->post('restaurant_id');
 		  $this->data['role_id'] = (int) $this->input->post('role_id');*/
-        if ($this->User_model->validate_form_data($user_id) === TRUE) {
+        if ($this->user_model->validate_form_data($user_id) === TRUE) {
 
             if ($this->upload_file("user_image")) {
                 $_POST["user_image"] = $this->data["upload_data"]["file_name"];
             }
 
-            $user_id = $this->User_model->update_data($user_id);
+            $user_id = $this->user_model->update_data($user_id);
             if ($user_id) {
 
                 $this->session->set_flashdata("msg_success", $this->lang->line("update_msg_success"));
@@ -313,13 +313,13 @@ class Users extends Admin_Controller
 
         $user_id = (int) $user_id;
 
-        if ($this->User_model->validate_form_data($user_id) === TRUE) {
+        if ($this->user_model->validate_form_data($user_id) === TRUE) {
 
             if ($this->upload_file("user_image")) {
                 $_POST["user_image"] = $this->data["upload_data"]["file_name"];
             }
 
-            $user_id = $this->User_model->update_data($user_id);
+            $user_id = $this->user_model->update_data($user_id);
             if ($user_id) {
 
                 $this->session->set_flashdata("msg_success", $this->lang->line("update_msg_success"));
@@ -452,7 +452,7 @@ class Users extends Admin_Controller
     {
 
         $user_id = (int) $this->session->userdata('user_id');
-        $this->data["user"] = $this->User_model->get($user_id);
+        $this->data["user"] = $this->user_model->get($user_id);
 
 
         $validation_config = array(
@@ -518,7 +518,7 @@ class Users extends Admin_Controller
             }
 
 
-            if ($this->User_model->save($inputs, $user_id)) {
+            if ($this->user_model->save($inputs, $user_id)) {
 
                 $this->session->set_flashdata("msg_success", $this->lang->line("update_msg_success"));
                 redirect(ADMIN_DIR . "users/update_profile");
