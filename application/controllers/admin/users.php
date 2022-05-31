@@ -31,14 +31,14 @@ class Users extends Admin_Controller
 
     /*public function get_user_add_form(){
 		
-		$this->data['restaurant_id'] = $this->input->post('restaurant_id');
+		
 		$this->data['role_id'] = $this->input->post('role_id');
 		$this->load->view(ADMIN_DIR."users/add_user_form", $this->data);
 		}
 		
 	public function get_user_edit_form(){
 		$user_id = $this->input->post('id');
-		$this->data['restaurant_id'] = $this->input->post('restaurant_id');
+		
 		$this->data['role_id'] = $this->input->post('role_id');
 		$this->data["user"] = $this->user_model->get($user_id);
 		$this->load->view(ADMIN_DIR."users/edit_user_form", $this->data);
@@ -254,7 +254,7 @@ class Users extends Admin_Controller
     public function get_user_add_form()
     {
 
-        $this->data['restaurant_id'] = $this->input->post('restaurant_id');
+
         $this->data['role_id'] = 23;
         $this->load->view(ADMIN_DIR . "users/add_user_form", $this->data);
     }
@@ -268,7 +268,7 @@ class Users extends Admin_Controller
             $user_id = $this->input->post('id');
         }
 
-        $this->data['restaurant_id'] = $this->input->post('restaurant_id');
+
         $this->data['role_id'] = 23;
         $this->data["user"] = $this->user_model->get($user_id);
         $this->load->view(ADMIN_DIR . "users/edit_user_form", $this->data);
