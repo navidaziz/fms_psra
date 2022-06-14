@@ -12,10 +12,6 @@ class Home extends Admin_Controller
 		parent::__construct();
 		$this->load->model("user_model");
 		$this->load->model("user_m");
-		//$this->lang->load("users", 'english');
-		//$this->lang->load("system", 'english');
-
-		//$this->output->enable_profiler(TRUE);
 	}
 	//---------------------------------------------------------------
 
