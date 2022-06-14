@@ -294,7 +294,7 @@ class Users extends Admin_Controller
             if ($user_id) {
 
                 $this->session->set_flashdata("msg_success", $this->lang->line("update_msg_success"));
-                echo "success";
+               // echo "success";
                 exit();
             } else {
                 $_POST['id'] = $user_id;

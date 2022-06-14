@@ -1,13 +1,13 @@
 <?php
-$query = "SELECT fs.fined_school_id, fs.school_id, fs.school_name, fs.district_name, fs.tehsil_name, fs.address ,
-							SUM(IF(f.status=1,1,0)) as density,
-							SUM(IF(f.status=1,f.fine_amount,0)) as total_fine,
-							SUM(IF(f.status=3,1,0)) as w_offed,
-							(SELECT SUM(fy.deposit_amount) FROM fine_payments as fy WHERE fy.is_deleted=0 AND fy.fined_school_id = fs.fined_school_id ) as paid_amount
-							FROM fines as f
-							INNER JOIN fined_schools fs ON (fs.fined_school_id = f.fined_school_id)
-							";
+$query = "SELECT 
+SUM(`original_fine_amount`) as `original_fine_amount`,
+sum(`total_fine`) as `total_fine`, 
+          sum(`total_waived_off`) as `total_waived_off`, 
+          sum(`total_fine_paid`) as `total_fine_paid`, 
+          sum(`total_fine_remaining`) as `total_fine_remaining` FROM `fine_school_list`;";
 $fine_summary = $this->db->query($query)->result()[0];
+
+
 ?>
 
 <style>
@@ -16,27 +16,25 @@ $fine_summary = $this->db->query($query)->result()[0];
     }
 </style>
 <small>
-    <table class="table table-bordered table-striped table2">
+    <table class="table table-bordered table-striped" style="text-align: center;">
         <thead>
             <tr>
-
-                <th rowspan="2">Fine Summary</th>
-                <th>Frequency</th>
                 <th>Total Fine</th>
-                <th>Waived Off</th>
-                <th>Total Paid</th>
-                <th>Total Remain</th>
+
+                <th>Total Waived Off</th>
+                <!-- <th>Total Fine Payable</th> -->
+                <th>Total Fine Paid</th>
+                <th>Total Fine Remaining</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th style="text-align: right;"><strong> Total</strong></th>
-                <td><?php echo $fine_summary->density; ?></td>
-                <td><?php echo $fine_summary->total_fine; ?></td>
-                <td><?php echo $fine_summary->w_offed; ?></td>
-                <td><?php echo $fine_summary->paid_amount; ?></td>
-                <td><?php echo $fine_summary->total_fine - $fine_summary->paid_amount; ?></td>
+                <td><?php echo @number_format($fine_summary->original_fine_amount, 2); ?></td>
+                <td><?php echo @number_format($fine_summary->total_waived_off, 2); ?></td>
+                <!-- <td><?php echo @number_format($fine_summary->total_fine, 2); ?></td> -->
 
+                <td><?php echo @number_format($fine_summary->total_fine_paid, 2); ?></td>
+                <td><?php echo @number_format($fine_summary->total_fine - $fine_summary->total_fine_paid, 2); ?></td>
             </tr>
         </tbody>
     </table>

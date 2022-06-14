@@ -60,12 +60,18 @@ class MY_Controller extends CI_Controller
      * with _thumbnail.
      * @return always return true
      */
-    public function upload_file($field_name, $config = NULL)
+    public function upload_file($field_name, $config = NULL, $thumnail = false, $id = NULL)
     {
         if (is_null($config)) {
+            if ($id) {
+                $upload_path = "./attachments/" . $this->router->fetch_class() . "/" . $id . "/";
+            } else {
+                $upload_path = "./attachments/" . $this->router->fetch_class() . "/";
+            }
+
             $config = array(
-                "upload_path" => "./assets/uploads/" . $this->router->fetch_class() . "/",
-                "allowed_types" => "jpg|jpeg|bmp|png|gif|mp3",
+                "upload_path" => $upload_path,
+                "allowed_types" => "pdf",
                 "max_size" => 10000,
                 "max_width" => 0,
                 "max_height" => 0,
@@ -73,6 +79,7 @@ class MY_Controller extends CI_Controller
                 "encrypt_name" => true
             );
         }
+
 
         $dir = $config["upload_path"];
         if (!is_dir($dir)) {
@@ -92,23 +99,26 @@ class MY_Controller extends CI_Controller
         } else {
 
             $this->data['upload_data'] = $this->upload->data();
+            $this->data['upload_data']['dir'] = str_replace(".", "", $dir);
 
 
             //now create image thumbnail
             //if($this->data['upload_data']['is_image'] == true){
+            if ($thumnail == true) {
+                $config['image_library'] = 'gd2';
+                $config['source_image']    =    $dir . $this->data['upload_data']['file_name'];
+                $config['create_thumb'] = TRUE;
+                //$config['maintain_ratio'] = TRUE;
+                $config['width']    = 100;
+                $config['height']    = 100;
 
-            $config['image_library'] = 'gd2';
-            $config['source_image']    = $dir . $this->data['upload_data']['file_name'];
-            $config['create_thumb'] = TRUE;
-            //$config['maintain_ratio'] = TRUE;
-            $config['width']    = 100;
-            $config['height']    = 100;
+                $this->load->library('image_lib', $config);
+                $this->image_lib->initialize($config);
 
-            $this->load->library('image_lib', $config);
-            $this->image_lib->initialize($config);
+                $this->image_lib->resize();
+                //}
 
-            $this->image_lib->resize();
-            //}
+            }
             return true;
         }
     }

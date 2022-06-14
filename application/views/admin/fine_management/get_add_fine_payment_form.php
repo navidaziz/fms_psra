@@ -67,7 +67,7 @@
                 <div style="border:1px solid #9FC8E8; border-radius: 10px; min-height: 10px;   margin: 5px; padding: 5px; background-color: white;">
                     <?php if ($fine->status != 0) { ?>
 
-                        <div class="col-md-6" style="background-color: #f0f0f0; border-radius:10px">
+                        <div class="col-md-7" style="background-color: #f0f0f0; border-radius:10px">
                             <table class="table">
                                 <tr>
 
@@ -97,6 +97,9 @@
                                         <p> <strong> <?php echo $fine->remarks ?> </strong></p>
                                         <br />
                                         <div style="text-align: left; font-size:9px; text-align:right">
+                                            <span class="pull-left" style="font-size: 14px;">
+                                                Download Attachment: <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                            </span>
                                             <small>
                                                 <?php if ($fine->status == 1 and $fine->total_payment <= 0) { ?>
                                                     <button class="btn btn-danger" style="padding: 1px; margin: 0px; font-size: 9px;" onclick="delete_fine(<?php echo $fine->fine_id ?>)" aria-hidden="true"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
@@ -140,12 +143,12 @@
                         </div>
 
 
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <?php
 
 
                             if ($fine->status == 1) { ?>
-                                <table class="table">
+                                <table class="ta ble">
                                     <tr>
 
                                         <th>STAN No</th>
