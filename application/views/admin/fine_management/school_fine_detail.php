@@ -245,14 +245,14 @@ foreach ($fines as $fine) {
                             </tr>
                             <tr>
 
-                                <td colspan="8">
+                                <td colspan="9">
                                     <p> <strong> <?php echo $fine->remarks ?> </strong></p>
 
 
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="8">
+                                <td colspan="9">
                                     <span class="pull-left"><?php echo $fine->fine_title ?> / <?php echo $fine->fine_channel_title ?></span>
                                     <small class="pull-right">
                                         <?php if ($fine->status == 1 and $fine->total_payment <= 0) { ?>
@@ -335,7 +335,12 @@ foreach ($fines as $fine) {
                                         <tr>
                                             <td>Waived of Notification No: <br /><input style="width: 100%;" type="text" id="waived_off_file_no_<?php echo $fine->fine_id ?>" name="waived_off_file_no" value="" /></td>
                                             <td>Notification date: <br /><input style="width: 100%;" type="date" id="waived_off_date_<?php echo $fine->fine_id ?>" name="waived_off_date" value="" /></td>
-                                            <td>Waived off amount: <br /><input style="width: 100%;" min="1" max="<?php echo $fine->fine_amount ?>" type="number" id="waived_off_amount_<?php echo $fine->fine_id ?>" name="waived_off_amount" value="" /></td>
+                                            <td>Waived off amount: <br /><input onkeyup="inWords3(<?php echo $fine->fine_id ?>)" style="width: 100%;" min="1" max="<?php echo $fine->fine_amount ?>" type="number" id="waived_off_amount_<?php echo $fine->fine_id ?>" name="waived_off_amount" value="" />
+                                                <div style="text-transform: capitalize;  text-align:left">
+
+                                                    <small style="color: red;"> In Words: </small> <small style="color: green;" id="number_to_words_waived_<?php echo $fine->fine_id ?>"></small>
+                                                </div>
+                                            </td>
 
                                         </tr>
                                         <tr>
@@ -835,6 +840,25 @@ foreach ($fines as $fine) {
         str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
         str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
         $('#inword_' + fine_id).text(str);
+
+
+    }
+
+    function inWords3(fine_id) {
+        $('#inword_div_' + fine_id).show();
+        num = $('#waived_off_amount_' + fine_id).val();
+
+
+        if ((num = num.toString()).length > 9) return 'overflow';
+        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+        if (!n) return;
+        var str = '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
+        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
+        str += (n[5] != 0) ? ((str != '') ? 'and ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
+        $('#number_to_words_waived_' + +fine_id).text(str);
 
 
     }

@@ -127,28 +127,30 @@
 							District Name
 						</td>
 						<td>
-							<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-							<script>
-								$(function() {
-									var availableTags = [
-										<?php $query = "SELECT districtTitle FROM districts";
-										$districts = $this->db->query($query)->result();
-										foreach ($districts as $district) {
-										?> "<?php echo $district->districtTitle; ?>",
 
-										<?php } ?>
-									];
-									$("#district_name").autocomplete({
-										source: availableTags
-									});
-								});
-							</script>
 
 
 							<input class="r_only" required type="text" value="" name="district_name" placeholder="District Name" id="district_name" />
 							<?php echo form_error("district_name", "<p class=\"text-danger\">", "</p>"); ?>
 						</td>
 					</tr>
+
+					<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+					<script>
+						$(function() {
+							var availableTags = [
+								<?php $query = "SELECT districtTitle FROM districts";
+								$districts = $this->db->query($query)->result();
+								foreach ($districts as $district) {
+								?> "<?php echo $district->districtTitle; ?>",
+
+								<?php } ?>
+							];
+							$("#district_name").autocomplete({
+								source: availableTags
+							});
+						});
+					</script>
 					<tr>
 						<td>
 							Tehsil Name

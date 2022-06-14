@@ -310,14 +310,16 @@ class Fine_management extends Admin_Controller
 		);
 		$this->form_validation->set_rules($validations);
 
+		$input['fine_id'] = $fine_id = (int) $this->input->post('fine_id');
+		$query = "select fine_amount,fined_school_id from fines where fine_id = '" . $fine_id . "'";
+		$fine_amount = $this->db->query($query)->result()[0]->fine_amount;
+		$fined_school_id = $this->db->query($query)->result()[0]->fined_school_id;
+		$input['fined_school_id'] = $fined_school_id;
 		if ($this->form_validation->run() === TRUE) {
-			if ($this->upload_file("waived_off_file")) {
+			if ($this->upload_file("waived_off_file", NULL, FALSE, $input['fined_school_id'])) {
 
-				$input['fine_id'] = $fine_id = (int) $this->input->post('fine_id');
-				$query = "select fine_amount,fined_school_id from fines where fine_id = '" . $fine_id . "'";
-				$fine_amount = $this->db->query($query)->result()[0]->fine_amount;
-				$fined_school_id = $this->db->query($query)->result()[0]->fined_school_id;
-				$input['fined_school_id'] = $fined_school_id;
+
+
 
 				$input['fine_amount'] = $fine_amount;
 				$input['waived_off_amount'] = $waived_off_amount = (float) $this->input->post('waived_off_amount');
